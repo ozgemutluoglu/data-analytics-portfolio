@@ -4,7 +4,7 @@ An interactive Tableau Public dashboard analyzing monthly cash flow, revenue dyn
 
 🔗 **[View the live dashboard on Tableau Public](https://public.tableau.com/views/NakitAkDashboardOyunAnalizi2022/NakitAkDashboardOyunAnalizi2022?:language=en-US&:display_count=n&:origin=viz_share_link)**
 
-📊 **[View the full presentation](https://docs.google.com/presentation/d/18cCeq84RBpY9CPye5sXnrsdkcETnkp1PD5k8ov36O6I/edit?usp=sharing)**
+📊 **[PROJE2_20052026_cashflow_TR_slides — View the full presentation](https://docs.google.com/presentation/d/18cCeq84RBpY9CPye5sXnrsdkcETnkp1PD5k8ov36O6I/edit?usp=sharing)**
 
 ## Objective
 
@@ -51,5 +51,6 @@ Year-end MRR grew from $1.5K to $9.4K, confirming strong organic growth — whil
 | File | Description |
 |---|---|
 | `dashboard_query.sql` | Full SQL pipeline (MRR, ARPPU, Churn, Expansion/Contraction, LTV) |
-| Full stakeholder presentation (findings + recommendations) |
 | `cash_flow_dashboard.twb` | Tableau workbook source file |
+
+The stakeholder presentation (findings + recommendations) is available via the Google Slides link above (`PROJE2_20052026_cashflow_TR_slides`).
