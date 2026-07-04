@@ -28,13 +28,17 @@ This dataset had two categories of problems that are common in real business dat
 1. **Missing values** across several columns (e.g. 170 missing `year_added` values caused by a known 2022 system bug), each requiring a different, business-defined fill strategy (median, zero, fixed value, or `'Unknown'`).
 2. **Inconsistent formatting**, discovered during cleaning rather than specified upfront:
    - `weight` was stored as **text**, with some values suffixed `" grams"` (e.g. `"479.42 grams"`) and others stored as plain numbers (e.g. `"247"`) — requiring string parsing before any numeric calculation (like the median) could be performed.
-   - `stock_location` had **inconsistent casing** (e.g. `a`, `B`, `d`) instead of the required uppercase `A`/`B`/`C`/`D`, which was only caught by inspecting the cleaned output — a good reminder that "no missing values" doesn't mean "clean data."
+   - `stock_location` had **inconsistent casing** (e.g. `a`, `B`, `d`) instead of the required uppercase `A`/`B`/`C`/`D`.
+   - `brand` contained a `'-'` placeholder value standing in for a missing brand — **not** a true `NULL`, so it silently passed a `COUNT(*) - COUNT(brand)` missing-value check and only surfaced when inspecting `DISTINCT` values (8 raw values instead of the expected 7). Fixed with `NULLIF(brand, '-')` before applying the standard `'Unknown'` fallback.
+
+   These two issues are a good reminder that "zero nulls" doesn't mean "clean data" — sentinel values and inconsistent casing hide behind a simple null check and need to be caught by profiling `DISTINCT` values per column.
 
 ## Approach
 
 All cleaning is done with a **non-destructive `SELECT` query** (no `UPDATE` statements), preserving the original `products` table:
 
 - `COALESCE()` to fill missing values per business-defined rules
+- `NULLIF()` to convert a hidden `'-'` sentinel value in `brand` into a true `NULL` before applying the fallback
 - `REPLACE()` to strip inconsistent unit suffixes from `weight` before casting to `numeric`
 - `PERCENTILE_CONT(0.5)` to calculate the true median for `weight` and `price` (rather than the mean, which is more sensitive to outliers)
 - `UPPER()` to standardize `stock_location` casing
@@ -68,6 +72,7 @@ Full SQL is available in [`foodyum_analysis.sql`](./foodyum_analysis.sql).
 
 ## Key Takeaways
 
-- Business-defined fill rules for missing data should always be treated as a starting point — cleaned output should still be visually inspected, since problems like inconsistent casing can hide behind a "no nulls" check.
+- A "zero missing values" check is not proof of clean data — sentinel/placeholder values (like a `'-'` standing in for a missing brand) pass right through a `NULL` count and only surface by profiling `DISTINCT` values per column.
+- Business-defined fill rules for missing data should be treated as a starting point, not the finish line — cleaned output should still be visually inspected.
 - Casting text-typed numeric columns safely often requires stripping inconsistent formatting first; checking `information_schema.columns` early avoids wasted debugging time.
 - Keeping cleaning logic in a reusable CTE (`WITH clean_data AS (...)`) makes downstream analysis queries (Tasks 3 & 4) simpler and ensures consistency across the whole analysis.
