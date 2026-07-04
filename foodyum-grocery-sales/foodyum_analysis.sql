@@ -35,7 +35,13 @@ FROM products;
 
      product_id           -> never missing (PK)
      product_type         -> missing -> 'Unknown'
-     brand                -> missing -> 'Unknown'
+     brand                -> missing -> 'Unknown'.
+                              NOTE: raw data also contained a '-'
+                              placeholder (not a true NULL) used to
+                              represent missing brand — caught only
+                              by inspecting DISTINCT values, since
+                              a NULL-count check reports 0 nulls.
+                              Handled with NULLIF(brand, '-').
      weight (grams)       -> strip " grams" suffix, cast to numeric,
                               missing -> overall median, round to 2dp
      price (USD)          -> missing -> overall median, round to 2dp
@@ -52,7 +58,7 @@ FROM products;
 SELECT
     product_id,
     COALESCE(product_type, 'Unknown') AS product_type,
-    COALESCE(brand, 'Unknown') AS brand,
+    COALESCE(NULLIF(brand, '-'), 'Unknown') AS brand,
     ROUND(
         COALESCE(
             REPLACE(weight, ' grams', '')::numeric,
@@ -69,11 +75,12 @@ SELECT
     ) AS price,
     COALESCE(average_units_sold, 0) AS average_units_sold,
     COALESCE(year_added, 2022) AS year_added,
-    UPPER(COALESCE(stock_location, 'Unknown')) AS stock_location
+    COALESCE(UPPER(stock_location), 'Unknown') AS stock_location
 FROM products;
 
 -- Result: 1,700 clean rows, zero remaining nulls, stock_location
--- fully standardized to uppercase A/B/C/D/Unknown
+-- fully standardized to uppercase A/B/C/D/Unknown, brand reduced
+-- from 8 raw distinct values (7 brands + '-') to 7 brands + 'Unknown'
 
 
 /* ------------------------------------------------------------
@@ -89,7 +96,7 @@ WITH clean_data AS (
     SELECT
         product_id,
         COALESCE(product_type, 'Unknown') AS product_type,
-        COALESCE(brand, 'Unknown') AS brand,
+        COALESCE(NULLIF(brand, '-'), 'Unknown') AS brand,
         ROUND(
             COALESCE(
                 REPLACE(weight, ' grams', '')::numeric,
@@ -106,7 +113,7 @@ WITH clean_data AS (
         ) AS price,
         COALESCE(average_units_sold, 0) AS average_units_sold,
         COALESCE(year_added, 2022) AS year_added,
-        UPPER(COALESCE(stock_location, 'Unknown')) AS stock_location
+        COALESCE(UPPER(stock_location), 'Unknown') AS stock_location
     FROM products
 )
 SELECT
@@ -140,7 +147,7 @@ WITH clean_data AS (
     SELECT
         product_id,
         COALESCE(product_type, 'Unknown') AS product_type,
-        COALESCE(brand, 'Unknown') AS brand,
+        COALESCE(NULLIF(brand, '-'), 'Unknown') AS brand,
         ROUND(
             COALESCE(
                 REPLACE(weight, ' grams', '')::numeric,
@@ -157,7 +164,7 @@ WITH clean_data AS (
         ) AS price,
         COALESCE(average_units_sold, 0) AS average_units_sold,
         COALESCE(year_added, 2022) AS year_added,
-        UPPER(COALESCE(stock_location, 'Unknown')) AS stock_location
+        COALESCE(UPPER(stock_location), 'Unknown') AS stock_location
     FROM products
 )
 SELECT
