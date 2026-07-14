@@ -4,7 +4,7 @@ Exploratory analysis of the World Happiness Report (2015–2019), combining five
 yearly datasets with inconsistent schemas into a single analysis-ready table,
 followed by EDA in pandas and an interactive Tableau dashboard.
 
-**[▶ Interactive Tableau Dashboard](https://public.tableau.com/views/WORLDHAPPINESSREPORT2015-2019_17821369701280/Dashboard1)** · **[Kaggle Notebook](#)** · **[Slide Deck (PPTX)](./World_Happiness_Report_2015-2019.pptx)**
+**[▶ Interactive Tableau Dashboard](https://public.tableau.com/views/WORLDHAPPINESSREPORT2015-2019_17821369701280/Dashboard1)** · **[Kaggle Notebook](https://www.kaggle.com/code/lemanzgemutluolu/world-happiness-report-2015-2019-eda-correlati)** · **[Slide Deck (PPTX)](./World_Happiness_Report_2015-2019.pptx)**
 
 ## Overview
 
