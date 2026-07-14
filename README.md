@@ -20,7 +20,7 @@ An interactive Tableau Public dashboard analyzing monthly cash flow, revenue dyn
 ### 🌍 [World Happiness Report 2015–2019 — pandas Merge, EDA & Tableau Dashboard](https://github.com/ozgemutluoglu/data-analytics-portfolio/blob/main/world-happiness-report-2015-2019)
 
 A 5-year, 782-row dataset built by merging five yearly World Happiness Report CSVs with inconsistent schemas in pandas, followed by correlation analysis and an interactive, year-filtered Tableau dashboard. Team project (4 collaborators). **Skills:** `pandas` (schema alignment, `concat`, country-based backfill), correlation analysis (pooled vs. per-year pitfalls), `matplotlib`/`seaborn`, Tableau Public.
-🔗 [Live dashboard](https://public.tableau.com/views/WORLDHAPPINESSREPORT2015-2019_17821369701280/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link)
+🔗 [Live dashboard](https://public.tableau.com/views/WORLDHAPPINESSREPORT2015-2019_17821369701280/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link) · [Kaggle Notebook](https://www.kaggle.com/code/lemanzgemutluolu/world-happiness-report-2015-2019-eda-correlati)
 
 ---
 
